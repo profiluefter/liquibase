@@ -360,8 +360,8 @@ public class MySQLDatabase extends AbstractJdbcDatabase {
     }
 
     /*
-     * List of reserved words from https://dev.mysql.com/doc/refman/8.4/en/keywords.html
-     * Words that became reserved in MySQL 8.0 or 8.4 are added via {@link #addMySQLVersionedReservedWords()}.
+     * List of reserved words from https://dev.mysql.com/doc/refman/9.2/en/keywords.html
+     * Words that became reserved in MySQL 8.0, 8.4 or 9.x are added via {@link #addMySQLVersionedReservedWords()}.
      */
     private static Set<String> createReservedWords() {
         return new HashSet<>(Arrays.asList("ACCESSIBLE",
@@ -675,11 +675,16 @@ public class MySQLDatabase extends AbstractJdbcDatabase {
 
     /**
      * Adds reserved words that were introduced for a specific version of MySQL. For an overview of 
-     * changes, please see: <a href="https://dev.mysql.com/doc/refman/8.4/en/keywords.html">
+     * changes, please see: <a href="https://dev.mysql.com/doc/refman/9.2/en/keywords.html">
      * Keywords and Reserved Words</a>.
      */
     private void addMySQLVersionedReservedWords() {
         try {
+            // words that became reserved in 9.2
+            if(getDatabaseMajorVersion() >= 10 || (getDatabaseMajorVersion() == 9 && getDatabaseMinorVersion() >= 2)) {
+                reservedWords.add("LIBRARY");
+            }
+
             // words that became reserved in 8.4
             if(getDatabaseMajorVersion() >= 9 || (getDatabaseMajorVersion() == 8 && getDatabaseMinorVersion() >= 4)) {
                 reservedWords.add("MANUAL");
