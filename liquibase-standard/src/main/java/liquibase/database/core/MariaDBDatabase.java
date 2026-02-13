@@ -9,7 +9,6 @@ import liquibase.structure.core.Table;
 import liquibase.util.StringUtil;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 
 /**
@@ -19,7 +18,29 @@ public class MariaDBDatabase extends MySQLDatabase {
     private static final String PRODUCT_NAME = "MariaDB";
 
     public MariaDBDatabase() {
-        addReservedWords(Collections.singletonList("PERIOD"));
+        // MariaDB reserved words not present in the MySQL reserved words list.
+        // https://mariadb.com/docs/server/reference/sql-structure/sql-language-structure/reserved-words
+        addReservedWords(Arrays.asList(
+                "CURRENT_ROLE",
+                "DELETE_DOMAIN_ID",
+                "DO_DOMAIN_IDS",
+                "GENERAL",
+                "IGNORE_DOMAIN_IDS",
+                "IGNORE_SERVER_IDS",
+                "MASTER_HEARTBEAT_PERIOD",
+                "MASTER_SSL_VERIFY_SERVER_CERT",
+                "OFFSET",
+                "PAGE_CHECKSUM",
+                "PARSE_VCOL_EXPR",
+                "PERIOD",
+                "REF_SYSTEM_ID",
+                "RETURNING",
+                "SLOW",
+                "STATS_AUTO_RECALC",
+                "STATS_PERSISTENT",
+                "STATS_SAMPLE_PAGES",
+                "VECTOR"
+        ));
         super.sequenceNextValueFunction = "NEXT VALUE FOR %s";
         // According to https://mariadb.com/kb/en/library/data-types/, retrieved on 2019-02-12
         super.unmodifiableDataTypes.addAll(Arrays.asList(
